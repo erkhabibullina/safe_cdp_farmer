@@ -7,6 +7,15 @@ import "hardhat/console.sol";
 
 contract YourContract {
 
+    bool private locked;
+
+    modifier noReentrancy() {
+        require(!locked, "Reentrant call.");
+        locked = true;
+        _;
+        locked = false;
+    }
+
     event Stake(address indexed staker, uint256 stakerBalance);
 
     mapping (address => uint256) private s_balances;
@@ -28,7 +37,7 @@ contract YourContract {
         return address(this).balance;
     }
 
-    function withdraw(uint256 amount) public payable {
+    function withdraw(uint256 amount) public payable noReentrancy {
         uint256 balance = s_balances[msg.sender];
         require(amount <= balance, "Insufficient balance.");
         s_balances[msg.sender] -= amount;

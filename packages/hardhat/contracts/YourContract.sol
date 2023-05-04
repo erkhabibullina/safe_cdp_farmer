@@ -7,21 +7,37 @@ import "hardhat/console.sol";
 
 contract YourContract {
 
-  event SetPurpose(address sender, string purpose);
+    event Stake(address indexed staker, uint256 stakerBalance);
 
-  string public purpose = "Building Unstoppable Apps!!!";
+    mapping (address => uint256) private s_balances;
 
-  constructor() payable {
-    // what should we do on deploy?
-  }
+    constructor() payable {
+        // what should we do on deploy?
+    }
 
-  function setPurpose(string memory newPurpose) public payable {
-      purpose = newPurpose;
-      console.log(msg.sender,"set purpose to",purpose);
-      emit SetPurpose(msg.sender, purpose);
-  }
+    function stake() public payable {
+        s_balances[msg.sender] += msg.value;
+        emit Stake(msg.sender, s_balances[msg.sender]);
+    }
 
-  // to support receiving ETH by default
-  receive() external payable {}
-  fallback() external payable {}
+    function getBalance(address staker) public view returns (uint256) {
+        return s_balances[staker];
+    }
+
+    function getContractBalance() public view returns (uint256) {
+        return address(this).balance;
+    }
+
+    function withdraw(uint256 amount) public payable {
+        uint256 balance = s_balances[msg.sender];
+        require(amount <= balance, "Insufficient balance.");
+        s_balances[msg.sender] -= amount;
+        payable(msg.sender).transfer(amount);
+    }
+
+    receive() external payable {
+        stake();
+    }
+
+    fallback() external payable {}
 }

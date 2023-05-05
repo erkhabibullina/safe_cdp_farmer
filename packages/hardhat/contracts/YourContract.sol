@@ -40,8 +40,9 @@ contract YourContract {
     function withdraw(uint256 amount) public payable noReentrancy {
         uint256 balance = s_balances[msg.sender];
         require(amount <= balance, "Insufficient balance.");
+        (bool success, ) = msg.sender.call{value: amount}("");
+        require(success, "Transfer failed.");
         s_balances[msg.sender] -= amount;
-        payable(msg.sender).transfer(amount);
     }
 
     receive() external payable {

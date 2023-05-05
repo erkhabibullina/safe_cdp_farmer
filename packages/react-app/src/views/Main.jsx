@@ -11,9 +11,6 @@ import { Link } from "react-router-dom"
  * @returns react component
  **/
 function Main({ yourLocalBalance, readContracts }) {
-    // you can also use hooks locally in your component of choice
-    // in this case, let's keep track of 'purpose' variable from our contract
-    const purpose = useContractReader(readContracts, "YourContract", "purpose")
     const [amountDeposited, setAmountDeposited] = useState(0)
 
     const handleDeposit = amount => {
@@ -63,10 +60,9 @@ const DepositForm = ({ onDeposit }) => {
     }
 
     const handleInputChange = e => {
-        const regExp = /^[0-9.]*$/
-        if (regExp.test(e.target.value) || e.target.value === "") {
+        validateInput(e, () => {
             setAmount(e.target.value)
-        }
+        })
     }
 
     return (
@@ -112,11 +108,10 @@ const WithdrawForm = ({ onWithdraw, amountDeposited }) => {
     }
 
     const handleInputChange = e => {
-        const regExp = /^[0-9.]*$/
-        if (regExp.test(e.target.value) || e.target.value === "") {
+        validateInput(e, () => {
             setAmountToWithdraw(e.target.value)
             setErrorMessage("")
-        }
+        })
     }
 
     return (
@@ -151,6 +146,13 @@ const WithdrawForm = ({ onWithdraw, amountDeposited }) => {
             )}
         </div>
     )
+}
+
+const validateInput = (e, callback) => {
+    const regex = /^[0-9.]*$/
+    if (regex.test(e.target.value) || e.target.value === "") {
+        callback()
+    }
 }
 
 export default Main

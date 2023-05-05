@@ -8,7 +8,9 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
 contract YourContract {
 
-    event Stake(address indexed staker, uint256 stakerBalance);
+    event LogDepositReceived(address indexed from);
+
+    event Deposit(address indexed from, uint256 balance);
 
     mapping (address => uint256) private s_balances;
 
@@ -26,7 +28,7 @@ contract YourContract {
 
     function deposit() public payable nonReentrant {
         s_balances[msg.sender] += msg.value;
-        emit Stake(msg.sender, s_balances[msg.sender]);
+        emit Deposit(msg.sender, s_balances[msg.sender]);
     }
 
     function withdraw(uint256 _amount) public payable nonReentrant {
@@ -41,5 +43,8 @@ contract YourContract {
         deposit();
     }
 
-    fallback() external payable {}
+    fallback() external payable {
+        require(msg.data.length == 0);
+        emit LogDepositReceived(msg.sender);
+    }
 }

@@ -10,22 +10,22 @@ import { Link } from "react-router-dom"
  * @param {*} readContracts contracts from current chain already pre-loaded using ethers contract module. More here https://docs.ethers.io/v5/api/contract/contract/
  * @returns react component
  **/
-function Staking({ yourLocalBalance, readContracts }) {
+function Main({ yourLocalBalance, readContracts }) {
     // you can also use hooks locally in your component of choice
     // in this case, let's keep track of 'purpose' variable from our contract
     const purpose = useContractReader(readContracts, "YourContract", "purpose")
-    const [amountStaked, setAmountStaked] = useState(0)
+    const [amountDeposited, setAmountDeposited] = useState(0)
 
-    const handleStake = amount => {
-        // Send the transaction to the blockchain to stake the specified amount
-        console.log(`Staking ${amount} ETH...`)
-        setAmountStaked(amountStaked + amount)
+    const handleDeposit = amount => {
+        // Send the transaction to the blockchain to deposit the specified amount
+        console.log(`Depositing ${amount} ETH...`)
+        setAmountDeposited(amountDeposited + amount)
     }
 
     const handleWithdraw = amount => {
         // Send the transaction to the blockchain to withdraw the specified amount
         console.log(`Withdrawing ${amount} ETH...`)
-        setAmountStaked(amountStaked - amount)
+        setAmountDeposited(amountDeposited - amount)
     }
 
     return (
@@ -37,25 +37,25 @@ function Staking({ yourLocalBalance, readContracts }) {
                 alignItems: "center"
             }}
         >
-            <h1>Staking App</h1>
-            <AmountStaked amount={amountStaked} />
-            <StakingForm onStake={handleStake} />
-            <WithdrawForm onWithdraw={handleWithdraw} amountStaked={amountStaked} />
+            <h1>Lending App</h1>
+            <AmountDeposited amount={amountDeposited} />
+            <DepositForm onDeposit={handleDeposit} />
+            <WithdrawForm onWithdraw={handleWithdraw} amountDeposited={amountDeposited} />
         </div>
     )
 }
 
-const AmountStaked = ({ amount }) => {
-    return <div style={{ marginBottom: "16px" }}>You staked {amount} ETH.</div>
+const AmountDeposited = ({ amount }) => {
+    return <div style={{ marginBottom: "16px" }}>You deposited {amount} ETH.</div>
 }
 
-const StakingForm = ({ onStake }) => {
+const DepositForm = ({ onDeposit }) => {
     const [amount, setAmount] = useState("")
 
-    const handleStake = () => {
+    const handleDeposit = () => {
         // Validate the amount before submitting the transaction
         if (parseFloat(amount) > 0) {
-            onStake(parseFloat(amount))
+            onDeposit(parseFloat(amount))
             setAmount("")
         } else {
             alert("Please enter a valid amount")
@@ -73,7 +73,7 @@ const StakingForm = ({ onStake }) => {
         <div style={{ display: "flex", alignItems: "center", marginBottom: "16px" }}>
             <Input
                 style={{ width: "200px" }}
-                placeholder="Enter amount to stake"
+                placeholder="Enter amount to deposit"
                 value={amount}
                 onChange={handleInputChange}
             />
@@ -85,23 +85,23 @@ const StakingForm = ({ onStake }) => {
                     marginLeft: "16px"
                 }}
                 type="primary"
-                onClick={handleStake}
+                onClick={handleDeposit}
             >
-                Stake
+                Deposit
             </Button>
         </div>
     )
 }
 
-const WithdrawForm = ({ onWithdraw, amountStaked }) => {
+const WithdrawForm = ({ onWithdraw, amountDeposited }) => {
     const [amountToWithdraw, setAmountToWithdraw] = useState("")
     const [errorMessage, setErrorMessage] = useState("")
 
     const handleWithdraw = () => {
         // Validate the amount before submitting the transaction
         const parsedWithdrawAmount = parseFloat(amountToWithdraw)
-        if (parsedWithdrawAmount > amountStaked) {
-            setErrorMessage("You can't withdraw more than you staked")
+        if (parsedWithdrawAmount > amountDeposited) {
+            setErrorMessage("You can't withdraw more than you deposited!")
         } else if (parsedWithdrawAmount > 0) {
             onWithdraw(parsedWithdrawAmount)
             setAmountToWithdraw("")
@@ -153,4 +153,4 @@ const WithdrawForm = ({ onWithdraw, amountStaked }) => {
     )
 }
 
-export default Staking
+export default Main

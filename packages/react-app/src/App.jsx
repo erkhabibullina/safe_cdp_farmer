@@ -30,7 +30,7 @@ import externalContracts from "./contracts/external_contracts"
 // contracts
 import deployedContracts from "./contracts/hardhat_contracts.json"
 import { getRPCPollTime, Transactor, Web3ModalSetup } from "./helpers"
-import { Staking, ExampleUI, Subgraph } from "./views"
+import { Main, ExampleUI, Subgraph } from "./views"
 import { useStaticJsonRPC, useGasPrice } from "./hooks"
 import { NotificationProvider } from "@web3uikit/core"
 
@@ -333,7 +333,7 @@ console.log("🏷 Resolved austingriffith.eth as:", addressFromENS)
                     mode="horizontal"
                 >
                     <Menu.Item key="/">
-                        <Link to="/">Staking</Link>
+                        <Link to="/">Main</Link>
                     </Menu.Item>
                     <Menu.Item key="/debug">
                         <Link to="/debug">Debug Contracts</Link>
@@ -352,10 +352,7 @@ console.log("🏷 Resolved austingriffith.eth as:", addressFromENS)
                 <Switch>
                     <Route exact path="/">
                         {/* pass in any web3 props to this Home component. For example, yourLocalBalance */}
-                        <Staking
-                            yourLocalBalance={yourLocalBalance}
-                            readContracts={readContracts}
-                        />
+                        <Main yourLocalBalance={yourLocalBalance} readContracts={readContracts} />
                     </Route>
                     <Route exact path="/debug">
                         {/*

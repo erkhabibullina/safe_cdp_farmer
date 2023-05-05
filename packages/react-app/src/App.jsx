@@ -29,7 +29,7 @@ import externalContracts from "./contracts/external_contracts"
 // contracts
 import deployedContracts from "./contracts/hardhat_contracts.json"
 import { getRPCPollTime, Transactor, Web3ModalSetup } from "./helpers"
-import { Home, ExampleUI, Hints, Subgraph } from "./views"
+import { Staking, ExampleUI, Subgraph } from "./views"
 import { useStaticJsonRPC, useGasPrice } from "./hooks"
 
 const { ethers } = require("ethers")
@@ -182,9 +182,9 @@ function App(props) {
     )
 
     /*
-  const addressFromENS = useResolveName(mainnetProvider, "austingriffith.eth");
-  console.log("🏷 Resolved austingriffith.eth as:", addressFromENS)
-  */
+const addressFromENS = useResolveName(mainnetProvider, "austingriffith.eth");
+console.log("🏷 Resolved austingriffith.eth as:", addressFromENS)
+*/
 
     //
     // 🧫 DEBUG 👨🏻‍🔬
@@ -324,13 +324,10 @@ function App(props) {
                 mode="horizontal"
             >
                 <Menu.Item key="/">
-                    <Link to="/">App Home</Link>
+                    <Link to="/">Staking</Link>
                 </Menu.Item>
                 <Menu.Item key="/debug">
                     <Link to="/debug">Debug Contracts</Link>
-                </Menu.Item>
-                <Menu.Item key="/hints">
-                    <Link to="/hints">Hints</Link>
                 </Menu.Item>
                 <Menu.Item key="/exampleui">
                     <Link to="/exampleui">ExampleUI</Link>
@@ -346,7 +343,7 @@ function App(props) {
             <Switch>
                 <Route exact path="/">
                     {/* pass in any web3 props to this Home component. For example, yourLocalBalance */}
-                    <Home yourLocalBalance={yourLocalBalance} readContracts={readContracts} />
+                    <Staking yourLocalBalance={yourLocalBalance} readContracts={readContracts} />
                 </Route>
                 <Route exact path="/debug">
                     {/*
@@ -363,14 +360,6 @@ function App(props) {
                         address={address}
                         blockExplorer={blockExplorer}
                         contractConfig={contractConfig}
-                    />
-                </Route>
-                <Route path="/hints">
-                    <Hints
-                        address={address}
-                        yourLocalBalance={yourLocalBalance}
-                        mainnetProvider={mainnetProvider}
-                        price={price}
                     />
                 </Route>
                 <Route path="/exampleui">

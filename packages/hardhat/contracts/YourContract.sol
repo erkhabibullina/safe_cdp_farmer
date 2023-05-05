@@ -2,19 +2,11 @@ pragma solidity >=0.8.0 <0.9.0;
 //SPDX-License-Identifier: MIT
 
 import "hardhat/console.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 // import "@openzeppelin/contracts/access/Ownable.sol"; 
 // https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/access/Ownable.sol
 
 contract YourContract {
-
-    bool private locked;
-
-    modifier noReentrancy() {
-        require(!locked, "Reentrant call.");
-        locked = true;
-        _;
-        locked = false;
-    }
 
     event Stake(address indexed staker, uint256 stakerBalance);
 
@@ -22,11 +14,6 @@ contract YourContract {
 
     constructor() payable {
         // what should we do on deploy?
-    }
-
-    function stake() public payable {
-        s_balances[msg.sender] += msg.value;
-        emit Stake(msg.sender, s_balances[msg.sender]);
     }
 
     function getBalance(address staker) public view returns (uint256) {
@@ -37,16 +24,21 @@ contract YourContract {
         return address(this).balance;
     }
 
-    function withdraw(uint256 amount) public payable noReentrancy {
+    function deposit() public payable nonReentrant {
+        s_balances[msg.sender] += msg.value;
+        emit Stake(msg.sender, s_balances[msg.sender]);
+    }
+
+    function withdraw(uint256 _amount) public payable nonReentrant {
         uint256 balance = s_balances[msg.sender];
-        require(amount <= balance, "Insufficient balance.");
-        (bool success, ) = msg.sender.call{value: amount}("");
+        require(_amount <= balance, "Insufficient balance.");
+        (bool success, ) = msg.sender.call{value: _amount}("");
         require(success, "Transfer failed.");
-        s_balances[msg.sender] -= amount;
+        s_balances[msg.sender] -= _amount;
     }
 
     receive() external payable {
-        stake();
+        deposit();
     }
 
     fallback() external payable {}

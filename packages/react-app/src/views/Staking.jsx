@@ -11,10 +11,6 @@ import { Link } from "react-router-dom"
  * @returns react component
  **/
 function Staking({ yourLocalBalance, readContracts }) {
-    // you can also use hooks locally in your component of choice
-    // in this case, let's keep track of 'purpose' variable from our contract
-    const purpose = useContractReader(readContracts, "YourContract", "purpose")
-
     const handleStake = amount => {
         // Send the transaction to the blockchain to stake the specified amount
         console.log(`Staking ${amount} ETH...`)
@@ -46,7 +42,7 @@ const StakingForm = ({ onStake }) => {
 
     const handleStake = () => {
         // Validate the amount before submitting the transaction
-        if (parseFloat(amount) > 0) {
+        if (isValidAmount(amount)) {
             onStake(parseFloat(amount))
             setAmount("")
         } else {
@@ -83,7 +79,7 @@ const WithdrawForm = ({ onWithdraw }) => {
 
     const handleWithdraw = () => {
         // Validate the amount before submitting the transaction
-        if (parseFloat(amount) > 0) {
+        if (isValidAmount(amount)) {
             onWithdraw(parseFloat(amount))
             setAmount("")
         } else {
@@ -113,6 +109,10 @@ const WithdrawForm = ({ onWithdraw }) => {
             </Button>
         </div>
     )
+}
+
+function isValidAmount(amount) {
+    return parseFloat(amount) > 0
 }
 
 export default Staking

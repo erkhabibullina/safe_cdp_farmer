@@ -1,6 +1,5 @@
 import { List } from "antd"
 import { useEventListener } from "eth-hooks/events/useEventListener"
-import Address from "./Address"
 
 /**
   ~ What it does? ~
@@ -43,11 +42,6 @@ export default function Events({
                                 item.blockNumber + "_" + item.args.sender + "_" + item.args.purpose
                             }
                         >
-                            <Address
-                                address={item.args[0]}
-                                ensProvider={mainnetProvider}
-                                fontSize={16}
-                            />
                             {item.args[1]}
                         </List.Item>
                     )

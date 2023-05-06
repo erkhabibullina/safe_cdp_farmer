@@ -1,7 +1,5 @@
 import React from "react"
 
-import Address from "../Address"
-
 const { utils } = require("ethers")
 
 const tryToDisplay = (thing, asText = false, blockExplorer) => {
@@ -16,13 +14,6 @@ const tryToDisplay = (thing, asText = false, blockExplorer) => {
                 <span style={{ overflowWrap: "break-word", width: "100%" }}>{displayable}</span>
             )
         }
-    }
-    if (thing && thing.indexOf && thing.indexOf("0x") === 0 && thing.length === 42) {
-        return asText ? (
-            thing
-        ) : (
-            <Address address={thing} fontSize={22} blockExplorer={blockExplorer} />
-        )
     }
     if (thing && thing.constructor && thing.constructor.name === "Array") {
         const mostReadable = v =>

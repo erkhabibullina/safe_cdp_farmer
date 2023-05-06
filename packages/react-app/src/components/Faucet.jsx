@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react"
 import Blockies from "react-blockies"
 import { SendOutlined } from "@ant-design/icons"
 import { Transactor } from "../helpers"
-import Wallet from "./Wallet"
 
 const { utils } = require("ethers")
 
@@ -86,13 +85,6 @@ export default function Faucet(props) {
                             }}
                             shape="circle"
                             icon={<SendOutlined />}
-                        />
-                        <Wallet
-                            color="#888888"
-                            provider={localProvider}
-                            ensProvider={ensProvider}
-                            price={price}
-                            address={faucetAddress}
                         />
                     </Tooltip>
                 }

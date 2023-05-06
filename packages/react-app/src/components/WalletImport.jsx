@@ -2,7 +2,6 @@ import { ethers } from "ethers"
 import React, { useEffect, useState } from "react"
 
 import { Button, Input } from "antd"
-import Address from "./Address"
 
 export default function WalletImport({ setShowImport }) {
     const [importMnemonic, setImportMnemonic] = useState()
@@ -101,9 +100,6 @@ export default function WalletImport({ setShowImport }) {
 
             {importAddress ? (
                 <div style={{ width: 420, height: 200 }}>
-                    <div style={{ float: "right", marginTop: 64 }}>
-                        <Address value={importAddress} />
-                    </div>
                     <hr />
                 </div>
             ) : (

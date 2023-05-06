@@ -9,3 +9,12 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
+
+/* Update the selector for the myButton class */
+.myButton {
+  color: black !important; /* Default text color */
+}
+
+.myButton:hover {
+  color: #30a7a3 !important; /* Text color when focused */
+}

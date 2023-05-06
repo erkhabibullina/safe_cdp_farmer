@@ -3,8 +3,6 @@ import React, { useState } from "react"
 import { useBlockNumber, usePoller } from "eth-hooks"
 // import { WalletOutlined } from '@ant-design/icons';
 
-import Address from "./Address"
-
 export default function Provider(props) {
     const [showMore, setShowMore] = useState(false)
     const [status, setStatus] = useState("processing")
@@ -76,9 +74,7 @@ export default function Provider(props) {
     if (typeof signer !== "undefined" && address) {
         showWallet = (
             <span>
-                <span style={{ padding: 3 }}>
-                    <Address minimized address={address} />
-                </span>
+                <span style={{ padding: 3 }}></span>
             </span>
         )
     }
